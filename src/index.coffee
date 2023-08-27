@@ -5,7 +5,7 @@ import Zephyr from "@dashkite/zephyr"
 
 hash = ( it ) ->
   result = Crypto.createHash "sha1"
-  for await text from it
+  for text from it
     result.update text
   result.digest "hex"
 
