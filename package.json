@@ -36,6 +36,7 @@
     "@dashkite/genie-presets": "^0.6.4"
   },
   "dependencies": {
-    "@dashkite/zephyr": "link:../zephyr"
+    "@dashkite/zephyr": "link:../zephyr",
+    "glob": "^10.3.3"
   }
 }
