@@ -1,9 +1,11 @@
+import FS from "node:fs/promises"
 import Path from "node:path"
 import Crypto from "node:crypto"
 import * as Fn from "@dashkite/joy/function"
 import * as It from "@dashkite/joy/iterable"
 import Zephyr from "@dashkite/zephyr"
 import * as Glob from "fast-glob"
+import { expand } from "@dashkite/polaris"
 
 glob = ( patterns, options ) ->
   Glob.glob patterns, options
@@ -27,7 +29,17 @@ Hash =
       { data } = await Zephyr.read ".genie/hashes.yaml"
       context.changed =
         ( data[ context.source.path ] != context.source.hash )
-      
+
+
+# taken from Masonry
+# TODO avoid duplicated code
+targetPath = ( target, context ) ->
+  do ({ source, extension } = context ) ->
+    directory = Path.join ( expand target, context ), source.directory
+    await FS.mkdir directory, recursive: true
+    name = source.name + ( extension ? source.extension )
+    Path.join directory, name
+
 File =
 
   hash: It.map Hash.generate
@@ -42,6 +54,18 @@ File =
     It.select ( context ) -> context.changed
     It.tap Hash.store
   ]
+
+  # TODO separate into a flow: target, write, store-hash
+  # store-hash is distinct from the File.store / Hash.store
+  write: ( target ) ->
+    It.resolve It.tap ( context ) ->
+      do ({ path } = {}) ->
+        path = await targetPath target, context
+        Promise.all [
+          Zephyr.update ".genie/hashes.yaml", ( hashes ) ->
+            hashes[ path ] = context.source.hash
+          FS.writeFile path, context.output
+        ]
 
 # TODO combinator for dealing with a whole project
 
