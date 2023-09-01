@@ -33,10 +33,10 @@
     "@dashkite/amen-console": "^0.0.2",
     "@dashkite/assert": "^0.1.4",
     "@dashkite/genie": "^0.5.11",
-    "@dashkite/genie-presets": "^0.6.4"
+    "@dashkite/genie-presets": "^0.6.4",
+    "fast-glob": "^3.3.1"
   },
   "dependencies": {
-    "@dashkite/zephyr": "link:../zephyr",
-    "glob": "^10.3.3"
+    "@dashkite/zephyr": "link:../zephyr"
   }
 }

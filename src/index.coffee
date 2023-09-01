@@ -3,10 +3,10 @@ import Crypto from "node:crypto"
 import * as Fn from "@dashkite/joy/function"
 import * as It from "@dashkite/joy/iterable"
 import Zephyr from "@dashkite/zephyr"
-import { Glob } from "glob"
+import * as Glob from "fast-glob"
 
 glob = ( patterns, options ) ->
-  new Glob patterns, options
+  Glob.glob patterns, options
 
 hash = ( it ) ->
   result = Crypto.createHash "sha1"
@@ -54,12 +54,24 @@ parse = parse = (path) ->
 
 Files =
 
+  hash: ->
+    # run "git ls-files 
+    #         -cmo 
+    #         --exclude-standard 
+    #         --deduplicate 
+    #       | tr '\\n' '\\0' 
+    #       | xargs -0 ls -1df 2>/dev/null 
+    #       | git hash-object --stdin-paths 
+    #       | git hash-object --stdin"
+
+
+
   targets: ( description ) ->
     ->
       root = description.root ? "."
       for target, builds of description
         for build in builds
-          for await path from glob build.glob, cwd: root
+          for path in await glob build.glob, cwd: root
             yield {
               root
               source: parse path
