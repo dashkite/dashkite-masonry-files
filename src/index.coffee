@@ -55,6 +55,10 @@ File =
     It.tap Hash.store
   ]
 
+  extension: ( extension ) ->
+    It.resolve It.tap ( context ) ->
+      context.extension = expand extension
+
   # TODO separate into a flow: target, write, store-hash
   # store-hash is distinct from the File.store / Hash.store
   write: ( target ) ->
