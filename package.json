@@ -33,11 +33,11 @@
     "@dashkite/amen-console": "^0.0.2",
     "@dashkite/assert": "^0.1.4",
     "@dashkite/genie": "link:../genie",
-    "@dashkite/genie-presets": "link:../genie-presets",
-    "@dashkite/polaris": "link:../polaris",
-    "fast-glob": "^3.3.1"
+    "@dashkite/genie-coffee": "link:../genie-coffee"
   },
   "dependencies": {
-    "@dashkite/zephyr": "link:../zephyr"
+    "@dashkite/polaris": "link:../polaris",
+    "@dashkite/zephyr": "link:../zephyr",
+    "fast-glob": "^3.3.1"
   }
 }

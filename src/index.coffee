@@ -99,6 +99,7 @@ Files =
       root = description.root ? "."
       for target, builds of description
         for build in builds
+          build.preset ?= target
           for path in await glob build.glob, cwd: root
             yield {
               root
