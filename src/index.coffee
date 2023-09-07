@@ -30,7 +30,6 @@ Hash =
       context.changed =
         ( data[ context.source.path ] != context.source.hash )
 
-
 # taken from Masonry
 # TODO avoid duplicated code
 targetPath = ( target, context ) ->
@@ -57,7 +56,7 @@ File =
 
   extension: ( extension ) ->
     It.resolve It.tap ( context ) ->
-      context.extension = expand extension
+      context.extension = expand extension, context
 
   # TODO separate into a flow: target, write, store-hash
   # store-hash is distinct from the File.store / Hash.store
@@ -65,11 +64,7 @@ File =
     It.resolve It.tap ( context ) ->
       do ({ path } = {}) ->
         path = await targetPath target, context
-        Promise.all [
-          Zephyr.update ".genie/hashes.yaml", ( hashes ) ->
-            hashes[ path ] = context.source.hash
-          FS.writeFile path, context.output
-        ]
+        FS.writeFile path, context.output
 
 # TODO combinator for dealing with a whole project
 

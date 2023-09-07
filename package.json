@@ -1,5 +1,5 @@
 {
-  "name": "@dashkite/genie-files",
+  "name": "@dashkite/masonry-files",
   "version": "0.0.0",
   "description": "File combinators for defining Genie build tasks.",
   "keywords": [],
