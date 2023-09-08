@@ -1,0 +1,11 @@
+{
+  "presets": [
+    [ "@babel/preset-env" ]
+  ],
+  "plugins": [
+    [ "babel-plugin-autocomplete-index" ]
+  ],
+  "targets": {
+    "node": "current"
+  }
+}

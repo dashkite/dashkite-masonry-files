@@ -1,4 +1,4 @@
-# Genie Files
+# Masonry Targest
 
-*File combinators for defining Genie build tasks.*
+*Masonry combinators for managing multiple targets.*
 

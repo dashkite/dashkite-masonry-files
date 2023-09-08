@@ -1,7 +1,7 @@
 {
-  "name": "@dashkite/masonry-files",
+  "name": "@dashkite/masonry-targets",
   "version": "0.0.0",
-  "description": "File combinators for defining Genie build tasks.",
+  "description": "Masonry combinators for managing multiple targets.",
   "keywords": [],
   "homepage": "https://github.com/dashkite/genie-files#readme",
   "bugs": {
@@ -15,29 +15,29 @@
   "author": "Daniel Yoder",
   "exports": {
     ".": {
-      "browser": "./build/browser/src/index.js",
-      "node": "./build/node/src/index.js"
+      "node": "./build/src/index.js"
     }
   },
-  "main": "build/node/src/index.js",
+  "main": "build/src/index.js",
   "files": [
-    "build/browser/src",
-    "build/node/src"
+    "build/src"
   ],
   "scripts": {
-    "test": "genie test",
-    "build": "genie build"
+    "build": "scripts/build",
+    "test": "scripts/test"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.15",
+    "@babel/preset-env": "^7.22.15",
     "@dashkite/amen": "^0.2.0",
     "@dashkite/amen-console": "^0.0.2",
     "@dashkite/assert": "^0.1.4",
     "@dashkite/genie": "link:../genie",
-    "@dashkite/genie-coffee": "link:../genie-coffee"
+    "@swc/cli": "^0.1.62",
+    "babel-plugin-autocomplete-index": "^0.2.0"
   },
   "dependencies": {
-    "@dashkite/polaris": "link:../polaris",
-    "@dashkite/zephyr": "link:../zephyr",
+    "@dashkite/joy": "^0.3.16",
     "fast-glob": "^3.3.1"
   }
 }

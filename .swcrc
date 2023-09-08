@@ -1,0 +1,11 @@
+{
+  "sourceMaps": "inline",
+  "jsc": {
+    "parser": {
+      "syntax": "ecmascript"
+    }
+  },
+  "module": {
+    "type": "commonjs"
+  }
+}
