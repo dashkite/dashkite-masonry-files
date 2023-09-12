@@ -18,6 +18,11 @@ extension = ( extension ) ->
   It.resolve It.tap ( context ) ->
     context.extension = Template.expand extension, context
 
+copy = ( target ) ->
+  It.resolve It.tap ( context ) ->
+    FS.copyFile ( Path.source context ),
+      ( await Path.expand target, context )
+
 # TODO separate into a flow: target, write, store-hash
 # store-hash is distinct from the File.store / Hash.store
 write = ( target ) ->
@@ -26,5 +31,5 @@ write = ( target ) ->
       path = await Path.expand target, context
       FS.writeFile path, context.output
 
-export default { glob, extension, write }
-export { glob, extension, write }
+export default { glob, extension, copy, write }
+export { glob, extension, copy, write }

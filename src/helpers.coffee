@@ -22,6 +22,9 @@ Path =
     name: name
     extension: ext
 
+  source: ({ root, source }) ->
+    $Path.join ( root ? "." ), source.path
+  
   expand: ( target, context ) ->
     do ({ source, extension } = context ) ->
       build = Template.expand target, context
