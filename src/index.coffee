@@ -3,9 +3,9 @@ import * as It from "@dashkite/joy/iterable"
 import { Template, Path } from "./helpers"
 
 glob = ( targets ) -> ->
-  root = targets.root ? "."
   for target, builds of targets
     for build in builds
+      root = build.root ? "."
       build.preset ?= target
       for path in await Path.glob build.glob, cwd: root
         yield {
