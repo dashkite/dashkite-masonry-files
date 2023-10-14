@@ -4,7 +4,7 @@ import print from "@dashkite/amen-console"
 
 do ->
 
-  print await test "Genie Files", [
+  print await test "Masonry Targets", [
 
     test "todo"
 

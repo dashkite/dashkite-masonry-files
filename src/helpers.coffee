@@ -1,5 +1,6 @@
 import $FS from "node:fs/promises"
 import $Path from "node:path"
+import EventEmitter from "node:events"
 import * as Glob from "fast-glob"
 
 Template =
@@ -33,4 +34,21 @@ Path =
       name = source.name + ( extension ? source.extension )
       $Path.join directory, name
 
-export { Template, Path }
+Event =
+  normalize: ( event ) ->
+    switch event
+      when "unlink" then name: "rm", type: "file"
+      when "addDir" then name: "add", type: "directory"
+      when "unlinkDir" then name: "rm", type: "directory"
+      else name: event, type: "file"
+
+  # transform event arguments
+  # allows us to go from binary to unary handler
+  map: ( emitter, events ) ->
+    result = new EventEmitter
+    for name, handler of events
+      emitter.on name, ( args... ) ->
+        result.emit name, handler args...
+    result
+
+export { Template, Path, Event }

@@ -16,6 +16,9 @@
   "exports": {
     ".": {
       "node": "./build/src/index.js"
+    },
+    "./*": {
+      "node": "./build/src/*.js"
     }
   },
   "main": "build/src/index.js",
@@ -38,6 +41,7 @@
   },
   "dependencies": {
     "@dashkite/joy": "^0.3.16",
+    "chokidar": "^3.5.3",
     "fast-glob": "^3.3.1"
   }
 }

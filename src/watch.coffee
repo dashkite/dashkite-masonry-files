@@ -1,0 +1,92 @@
+import * as Fn from "@dashkite/joy/function"
+import { generic } from "@dashkite/joy/generic"
+import * as It from "@dashkite/joy/iterable"
+import * as Type from "@dashkite/joy/type"
+import { Path, Event } from "./helpers"
+import chokidar from "chokidar"
+
+watcher = ( build ) ->
+  do ({ watcher } = {}) ->
+    build.root ?= "."
+    watcher = chokidar.watch build.glob, 
+      cwd: build.root
+      usePolling: true
+    It.events "all", 
+      Event.map watcher,
+        all: ( event, path ) ->
+          { event: ( Event.normalize event ), path, build }
+
+# TODO add this to joy/iterable
+merge = ( reactors ) ->
+  do ({ q } = {}) ->
+    q = It.Queue.create()
+    for reactor in reactors
+      do ( reactor, { product } = {}) ->
+        for await product from reactor
+          q.enqueue product
+    loop yield await q.dequeue()
+
+# TODO replace Joy version with something more like this?
+_match = do ({ match } = {}) ->
+
+  match = generic name: "match"
+
+  generic match, Type.isString, Type.isDefined, Type.isObject,
+    ( key, value, context ) -> context[ key ] == value
+
+  generic match, Type.isString, Type.isArray, Type.isObject,
+    ( key, values, context ) -> context[ key ] in values
+
+  generic match, Type.isObject, Type.isObject,
+    ( query, context ) ->
+      for key, value of query
+        return false if !( match key, value, context )
+      true
+
+  Fn.curry Fn.binary match
+
+match = do ({ match } = {}) ->
+
+  match = generic name: "match"
+
+  generic match, Type.isObject, Type.isFunction,
+    ( query, handler ) ->
+      Fn.tee ( context ) ->
+        if ( _match query, context.event )
+          handler context
+      
+  generic match, Type.isObject, Type.isArray,
+      ( query, handlers ) -> 
+        match query, Fn.flow handlers
+  
+  match
+
+watch = ( reactor ) ->
+  for await { event, path, build } from reactor
+    yield {
+      event
+      source: Path.parse path
+      build
+    }
+
+isGlob = ( value ) -> value?.glob?
+
+glob = do ({ glob } = {}) ->
+
+  glob = generic name: "glob"
+
+  generic glob, Type.isObject, ( targets ) -> ->
+    do ( reactors = [] ) ->
+      for target, builds of targets
+        for build in builds
+          build.preset ?= target
+          reactors.push watcher { build..., target }
+      watch merge reactors
+
+  generic glob, isGlob, ( target ) -> ->
+    watch watcher target
+  
+  glob
+
+export { glob, match }
+export default { glob, match }
