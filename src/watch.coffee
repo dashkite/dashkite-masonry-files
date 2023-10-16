@@ -2,8 +2,10 @@ import * as Fn from "@dashkite/joy/function"
 import { generic } from "@dashkite/joy/generic"
 import * as It from "@dashkite/joy/iterable"
 import * as Type from "@dashkite/joy/type"
-import { Path, Event } from "./helpers"
+import * as DRN from "@dashkite/drn-sky"
+import * as SNS from "@dashkite/dolores/sns"
 import chokidar from "chokidar"
+import { Path, Event } from "./helpers"
 
 watcher = ( build ) ->
   do ({ watcher } = {}) ->
@@ -88,5 +90,11 @@ glob = do ({ glob } = {}) ->
   
   glob
 
-export { glob, match }
-export default { glob, match }
+notify = do ({ topic } = {}) ->
+  Fn.tee ({ event }) -> 
+
+    topic ?= await SNS.create await DRN.resolve "drn:topic/dashkite/development"
+    SNS.publish topic, event
+
+export { glob, match, notify }
+export default { glob, match, notify }
