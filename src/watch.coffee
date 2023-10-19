@@ -16,7 +16,12 @@ watcher = ( build ) ->
     It.events "all", 
       Event.map watcher,
         all: ( event, path ) ->
-          { event: ( Event.normalize event ), path, build }
+          { 
+            event: ( Event.normalize event )
+            root: build.root # backward compatibility
+            path
+            build 
+          }
 
 # TODO add this to joy/iterable
 merge = ( reactors ) ->
@@ -92,7 +97,7 @@ glob = do ({ glob } = {}) ->
 
 notify = do ({ topic } = {}) ->
   Fn.tee ({ event }) -> 
-
+    console.log notify: event
     topic ?= await SNS.create await DRN.resolve "drn:topic/dashkite/development"
     SNS.publish topic, event
 

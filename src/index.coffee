@@ -8,11 +8,11 @@ assign = ( key, f ) ->
 glob = ( targets ) -> ->
   for target, builds of targets
     for build in builds
-      root = build.root ? "."
+      build.root ?= "."
       build.preset ?= target
-      for path in await Path.glob build.glob, cwd: root
+      for path in await Path.glob build.glob, cwd: build.root
         yield {
-          root
+          root: build.root # backward compatibility
           source: Path.parse path
           build: { build..., target }
         }
