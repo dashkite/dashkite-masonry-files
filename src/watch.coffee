@@ -96,10 +96,11 @@ glob = do ({ glob } = {}) ->
   glob
 
 notify = do ({ topic } = {}) ->
-  Fn.tee ({ event }) -> 
-    console.log notify: event
+  Fn.tee ({ source, event, module }) -> 
+    # TODO add source path
+    # TODO how to determine whether the souce is “local”?
     topic ?= await SNS.create await DRN.resolve "drn:topic/dashkite/development"
-    SNS.publish topic, event
+    SNS.publish topic, { event..., source, module: module.name }
 
 export { glob, match, notify }
 export default { glob, match, notify }
