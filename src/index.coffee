@@ -36,7 +36,11 @@ rm = ( target ) ->
   Fn.tee ( context ) ->
     do ({ path } = {}) ->
       path = await Path.expand target, context
-      FS.rm path, recursive: true
+      try
+        await FS.rm path, recursive: true
+      catch error
+        unless error.message.startsWith "ENOENT"
+          throw error
 
 export default { glob, extension, copy, write, rm }
 export { glob, extension, copy, write, rm }

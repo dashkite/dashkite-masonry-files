@@ -40,10 +40,7 @@
     "babel-plugin-autocomplete-index": "^0.2.0"
   },
   "dependencies": {
-    "@dashkite/dolores": "link:../dolores",
-    "@dashkite/drn-sky": "link:../drn-sky",
     "@dashkite/joy": "^0.3.16",
-    "chokidar": "^3.5.3",
     "fast-glob": "^3.3.1"
   }
 }
