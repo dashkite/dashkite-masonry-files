@@ -37,7 +37,8 @@
     "@dashkite/assert": "^0.1.4",
     "@dashkite/genie": "link:../genie",
     "@swc/cli": "^0.1.62",
-    "babel-plugin-autocomplete-index": "^0.2.0"
+    "babel-plugin-autocomplete-index": "^0.2.0",
+    "coffeescript": "^2.7.0"
   },
   "dependencies": {
     "@dashkite/joy": "^0.3.16",
