@@ -1,11 +1,16 @@
 import FS from "node:fs/promises"
+import $Path from "node:path"
 import * as Fn from "@dashkite/joy/function"
 import { Template, Path } from "./helpers"
 
 assign = ( key, f ) -> 
   Fn.tee ( context ) -> context[ key ] = await f context
 
+read = Fn.memoize ( path ) ->
+  await FS.readFile path, "utf8"
+
 glob = ( targets ) -> ->
+  module = JSON.parse await read $Path.resolve "./package.json"
   for target, builds of targets
     for build in builds
       build.root ?= "."
@@ -15,6 +20,7 @@ glob = ( targets ) -> ->
           root: build.root # backward compatibility
           source: Path.parse path
           build: { build..., target }
+          module: module
         }
 
 extension = ( extension ) ->
