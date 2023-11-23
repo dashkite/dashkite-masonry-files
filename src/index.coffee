@@ -10,7 +10,6 @@ read = Fn.memoize ( path ) ->
   await FS.readFile path, "utf8"
 
 glob = ( targets ) -> ->
-  module = JSON.parse await read $Path.resolve "./package.json"
   for target, builds of targets
     for build in builds
       build.root ?= "."
