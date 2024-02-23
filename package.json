@@ -1,6 +1,6 @@
 {
   "name": "@dashkite/masonry-targets",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Masonry combinators for managing multiple targets.",
   "keywords": [],
   "homepage": "https://github.com/dashkite/genie-files#readme",
